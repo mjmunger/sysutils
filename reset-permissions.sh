@@ -74,11 +74,13 @@ check_user() {
 }
 
 set_file_permissions() {
-    echo $([[ "$3" == '--dryrun' ]]) && echo "DRY RUN!" || echo "Commiting changes to file system."
+    [ "$3" == '--dryrun' ] && echo "DRY RUN!" || echo "Commiting changes to file system."
 
     echo "Setting ownership for $1 to $2:$2..."
 
     if [[ "$3" != "--commit" ]]; then
+        echo "Nothing was changed in the file system. This was just a preview."
+        echo "To commit your changes to the file system, use --commit as your final argument"
         return 0
     fi
 
