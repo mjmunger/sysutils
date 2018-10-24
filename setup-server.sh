@@ -453,6 +453,8 @@ usage() {
     echo ""
     echo "    checklist    Setup the options for the Linux server checklist in the Codex"
     echo ""
+    echo "    nodejs8      Setup and install NodeJS LTS version 8.x"
+    echo ""
     echo "There are more things in here. Read the script source to see how other stuff is done!"
 }
 
