@@ -14,3 +14,7 @@ Resets permissions to a specified path to the default Linux permissions and chan
 Example:
 
 `reset-permissions /home/foo baruser --commit`
+
+## Setup server
+
+Sets up Debian based servers with various common configurations. See its own help file for more information.
