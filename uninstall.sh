@@ -12,7 +12,7 @@ INSTALLDIR=`pwd`
 
 for (( i=0; i<${FILECOUNT}; i++ ))
 do
-    DESTFILE=${INSTALLAS[@]}
+    DESTFILE=${INSTALLAS[${i}]}
     DESTPATH=${BINPATH}/${DESTFILE}
 
     echo "Uninstalling ${DESTPATH}..."

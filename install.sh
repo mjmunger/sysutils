@@ -12,9 +12,9 @@ INSTALLDIR=`pwd`
 
 for (( i=0; i<${FILECOUNT}; i++ ))
 do
-    SOURCEFILE=${INSTALL[@]}
+    SOURCEFILE=${INSTALL[${i}]}
     SOURCEPATH=${INSTALLDIR}/${SOURCEFILE}
-    DESTFILE=${INSTALLAS[@]}
+    DESTFILE=${INSTALLAS[${i}]}
     DESTPATH=${BINPATH}/${DESTFILE}
 
     echo "Installing ${SOURCEPATH} -> ${DESTPATH}..."
