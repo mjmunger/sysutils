@@ -1,0 +1,10 @@
+#Files for installation
+INSTALL=( reset-permissions.sh )
+
+#Installed name
+INSTALLAS=( reset-permissions )
+
+if [ ${#INSTALL[@]} -ne ${#INSTALLAS[@]} ]; then
+    echo "Install files and install as counts do not match! Installer is broken."
+    exit 1
+fi
