@@ -1,8 +1,8 @@
 #Files for installation
-INSTALL=( reset-permissions.sh setup-server.sh )
+INSTALL=( reset-permissions.sh setup-server.sh sysutils.sh )
 
 #Installed name
-INSTALLAS=( reset-permissions setup-server )
+INSTALLAS=( reset-permissions setup-server sysutils )
 
 if [ ${#INSTALL[@]} -ne ${#INSTALLAS[@]} ]; then
     echo "Install files and install as counts do not match! Installer is broken."
