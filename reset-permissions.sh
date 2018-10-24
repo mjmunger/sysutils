@@ -107,7 +107,7 @@ check_path $1
 TARGETPATH=$( [ "$1" == '.' ] && echo `pwd` || echo $1 )
 
 USER=$(echo `whoami`)
-if [ $# -gt 2 ]; then
+if [ $# -ge 2 ]; then
     check_user $2
     USER=$2
 fi
