@@ -43,6 +43,8 @@ show_version() {
 update_package() {
     cd ${INSTALLDIR}
     git pull
+    ./uninstall.sh
+    ./install.sh
     show_version
 }
 
