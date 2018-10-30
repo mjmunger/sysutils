@@ -13,6 +13,8 @@ Syntax:
 
 Available commands:
 
+    install  Install a package. (use list command to see what's available)
+    list     List available packages.
     show     Show information about this installation.
 
              Available Options:
@@ -24,6 +26,7 @@ Available commands:
     update   Get the latest release. (requires root).
 
 Support and issues should be filed on github: https://github.com/mjmunger/sysutils
+
 EOF
 }
 
@@ -99,7 +102,7 @@ install_package() {
 
     case $1 in
         'python3-deb')
-            source install-python-36.sh
+            source ${SCRIPTSDIR}/install-python-36.sh
             install_python_36
             ;;
         'pyrpg')
@@ -122,6 +125,7 @@ EOF
 }
 
 INSTALLDIR=$(dirname $(readlink -f /usr/local/bin/reset-permissions))
+SCRIPTSDIR=${INSTALLDIR}/scripts/
 
 case $1 in
     'update')
