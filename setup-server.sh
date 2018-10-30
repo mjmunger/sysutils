@@ -431,6 +431,8 @@ usage() {
     echo "                 and makes them a member of the sudo group so they can get root"
     echo "                 permissions. This command takes one argument: the username."
     echo ""
+    echo "    addWebsite   Add a user for a website, and add default directory skeleton."
+    echo ""
     echo "    sudonopass   Removes the password requirement for members of the sudo group."
     echo ""
     echo "    lamp         Install the LAMP stack"
@@ -545,6 +547,30 @@ install_composer() {
     composer --version
 }
 
+add_website() {
+    PASSWORD=$(pwgen -cns 16 1)
+    useradd $1 -m
+    echo "$1:${PASSWORD}" | chpasswd
+    cd /home/$1
+    echo "The password for this user has been set to: ${PASSWORD}. Write this down. It is not saved anywhere!"
+    [ -d log ] || mkdir log
+    [ -d www ] || mkdir www
+}
+
+install_python_latest() {
+    apt update && apt upgrade -y
+    apt install build-essential -y
+    apt install libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev -y
+    apt install zlib1g -y
+    cd /usr/src/
+    wget https://www.python.org/ftp/python/3.7.1/Python-3.7.1.tar.xz
+    tar xf Python-3.7.1.tar.xz
+    cd /usr/src/Python-3.7.1/
+    ./configure --enable-optimizations
+    make
+    make install
+}
+
 if [ $(whoami) != "root" ]; then
   echo "$0 should be run as root! You're not root. Magic 8 ball says: RTFM."
   usage
@@ -607,6 +633,12 @@ check_dependency chpasswd
         ;;
     'nodejs8' )
         install_nodejs8
+        ;;
+    'addWebsite' )
+        add_website
+        ;;
+    'python-latest'
+        install_python_latest
         ;;
     * )
         usage

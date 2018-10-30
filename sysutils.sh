@@ -75,12 +75,58 @@ show_info() {
     echo ""
 }
 
+install_rpg() {
+    cd /usr/src/
+    git clone https://github.com/mjmunger/pyrpg.git
+    cd pyrpg
+    chmod +x install.sh
+    ./install.sh
+}
+
+error_out() {
+    echo $1
+    echo ""
+    usage
+    exit 1
+}
+
+install_package() {
+
+    [ -z $1 ] && error_out "You must specify a package to install"
+
+    case $1 in
+        'pyrpg')
+            install_rpg
+            ;;
+        *)
+            error_out "Package $1 is not found."
+            ;;
+    esac
+}
+
+list_packages() {
+    cat <<EOF
+
+Available packages to install:
+
+  pyrpg  - Generate cryptographically secure random passwords with specified character sets, patterns, or lengths.
+
+EOF
+}
+
 INSTALLDIR=$(dirname $(readlink -f /usr/local/bin/reset-permissions))
 
 case $1 in
     'update')
         check_root
         update_package
+        ;;
+    'install')
+        check_root
+        install_package $2
+        ;;
+    'list' )
+        list_packages
         ;;
     'show')
         show_info $2
