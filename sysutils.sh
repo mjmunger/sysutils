@@ -125,7 +125,7 @@ EOF
 }
 
 INSTALLDIR=$(dirname $(readlink -f /usr/local/bin/reset-permissions))
-SCRIPTSDIR=${INSTALLDIR}/scripts/
+SCRIPTSDIR=${INSTALLDIR}/scripts
 
 case $1 in
     'update')
