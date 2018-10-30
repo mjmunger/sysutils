@@ -76,6 +76,9 @@ show_info() {
 }
 
 install_rpg() {
+    apt build-dep python3
+    apt-get install libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
+
     cd /usr/src/
     git clone https://github.com/mjmunger/pyrpg.git
     cd pyrpg
@@ -95,6 +98,10 @@ install_package() {
     [ -z $1 ] && error_out "You must specify a package to install"
 
     case $1 in
+        'python3-deb')
+            source install-python-36.sh
+            install_python_36
+            ;;
         'pyrpg')
             install_rpg
             ;;
