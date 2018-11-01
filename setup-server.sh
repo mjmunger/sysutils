@@ -118,7 +118,24 @@ install_mysql() {
     apt-get update
     apt-get --assume-yes install mysql-server mysql-client
     mysql_upgrade
+    install_mysql_brtools
     echo "MySQL Installed"
+}
+
+install_mariadb() {
+    echo "Installing MariaDB..."
+    apt update
+    apt upgrade --assume-yes
+    apt install mariadb-client mariadb-server
+    install_mysql_brtools
+    echo "Install complete."
+}
+
+install_mysql_brtools() {
+    cd /usr/src/
+    git clone https://git.highpoweredhelp.com:8443/michael/mysql-brtools.git
+    cd mysql-brtools
+    ./setup
 }
 
 install_php7() {
@@ -252,6 +269,14 @@ install_mail_server() {
 compile_php() {
     apt-get --assume-yes build-dep php5
     #TODO: Insert stuff to compile PHP here.
+}
+
+install_certbot() {
+    echo "deb http://ftp.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/certbot.list
+    apt update
+    apt --assume-yes upgrade
+    apt-get install --assume-yes python-certbot-apache -t stretch-backports
+    echo "Certbot installation complete."
 }
 
 setup_sudo() {
@@ -457,6 +482,8 @@ usage() {
     echo ""
     echo "    nodejs8      Setup and install NodeJS LTS version 8.x"
     echo ""
+    echo "    certbot      Setup and install cerbot on Debian 9 (only)"
+    echo ""
     echo "There are more things in here. Read the script source to see how other stuff is done!"
 }
 
@@ -637,8 +664,11 @@ check_dependency chpasswd
     'addWebsite' )
         add_website
         ;;
-    'python-latest'
+    'python-latest' )
         install_python_latest
+        ;;
+    'certbot' )
+        install_certbot
         ;;
     * )
         usage
