@@ -160,17 +160,104 @@ EOF
 first_run_checklist() {
     echo "Enter the hostname for this computer"
     read HOSTNAME
+    echo "Enter the domain for this computer"
+    read DOMAIN
     echo ${HOSTNAME} > /etc/hostname
     hostname ${HOSTNAME}
+    sed -i "s/changeme/${HOSTMANE}/g" /etc/hosts
+    sed -i "s/example.com/${DOMAIN}/g" /etc/hosts
     MAC=$(ip addr | grep ether)
     echo "Mac address is: ${MAC}. Create the DHCP reservation now, and press enter. Or, type skip to skip this."
     read CHOICE
     if [ "${CHOICE}" != 'skip' ]; then
         dhclient -v
     fi
+    prefer_ipv4
+    disable_ipv6
+    update_apt
     apt update
     apt --assume-yes upgrade
+    apt-get install --assume-yes ntp
     harden_root_password
+}
+
+setup_auto_updates() {
+    apt-get install --assume-yes unattended-upgrades apt-listchanges
+    sed -i 's#//Unattended-Upgrade::Mail "root"#Unattended-Upgrade::Mail "root"#g' /etc/apt/apt.conf.d/50unattended-upgrades
+    sed -i 's#// *"o=Debian,a=stable";#        "o=Debian,a=stable";#g' /etc/apt/apt.conf.d/50unattended-upgrades
+    sed -i 's#// *"o=Debian,a=stable-updates";#        "o=Debian,a=stable-updates";#g' /etc/apt/apt.conf.d/50unattended-upgrades
+}
+
+clear_sources() {
+    #Kill the original sources
+    cat /dev/null > /etc/apt/sources.list
+}
+
+update_apt_jessie() {
+    clear_sources
+    echo -n "Updating APT to user sources as stated in https://wiki.debian.org/SourcesList..."
+
+    #Add in sources as stated in https://wiki.debian.org/SourcesList
+
+    echo "deb http://httpredir.debian.org/debian jessie main contrib non-free" > /etc/apt/sources.list
+    echo "deb-src http://httpredir.debian.org/debian jessie main contrib non-free" >> /etc/apt/sources.list
+    echo "" >> /etc/apt/sources.list
+    echo "deb http://httpredir.debian.org/debian jessie-updates main contrib non-free" >> /etc/apt/sources.list
+    echo "deb-src http://httpredir.debian.org/debian jessie-updates main contrib non-free" >> /etc/apt/sources.list
+    echo "" >> /etc/apt/sources.list
+    echo "deb http://security.debian.org/ jessie/updates main contrib non-free" >> /etc/apt/sources.list
+    echo "deb-src http://security.debian.org/ jessie/updates main contrib non-free" >> /etc/apt/sources.list
+    echo "[OK]"
+}
+
+update_apt_stretch() {
+    clear_sources
+
+    cat > /etc/apt/sources.list <<-'EOF'
+deb http://deb.debian.org/debian stretch main contrib non-free
+deb-src http://deb.debian.org/debian stretch main contrib non-free
+
+deb http://deb.debian.org/debian stretch-updates main contrib non-free
+deb-src http://deb.debian.org/debian stretch-updates main contrib non-free
+
+deb http://security.debian.org/debian-security/ stretch/updates main contrib non-free
+deb-src http://security.debian.org/debian-security/ stretch/updates main contrib non-free
+EOF
+
+}
+
+update_apt() {
+    CODENAME=`lsb_release -c | awk '{ print $2 }'`
+
+    echo "System codename detected as $CODENAME"
+     case $CODENAME in
+        'jessie')
+            update_apt_jessie
+            ;;
+        'stretch')
+            update_apt_stretch
+            ;;
+        * )
+            error_out "$CODENAME not found. Cannot update apt sources."
+    esac
+
+}
+
+prefer_ipv4() {
+    sed -i 's/^#precedence ::ffff:0:0\/96  100/precedence ::ffff:0:0\/96  100/g' /etc/gai.conf
+}
+
+disable_ipv6() {
+    cat >> /etc/sysctl.conf <<-'EOF'
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+net.ipv6.conf.eth0.disable_ipv6 = 1
+net.ipv6.conf.eth1.disable_ipv6 = 1
+net.ipv6.conf.ppp0.disable_ipv6 = 1
+net.ipv6.conf.tun0.disable_ipv6 = 1
+EOF
+    echo "You should reboot to ensure this is active and effective."
 }
 
 INSTALLDIR=$(dirname $(readlink -f /usr/local/bin/reset-permissions))
