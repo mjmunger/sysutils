@@ -110,6 +110,12 @@ install_composer() {
     composer --version
 }
 
+install_bacula() {
+    apt update && apt --assume-yes upgrade
+    apt install bacula bacula-common-mysql bacula-console bacula-client
+
+}
+
 install_package() {
 
     [ -z $1 ] && error_out "You must specify a package to install"
@@ -125,6 +131,12 @@ install_package() {
         'composer')
             install_composer
             ;;
+        'bacula-dir')
+            install_bacula
+            ;;
+        'bacula-fd')
+            install_bacula_fd
+            ;;
         *)
             error_out "Package $1 is not found."
             ;;
@@ -136,9 +148,29 @@ list_packages() {
 
 Available packages to install:
 
-  pyrpg  - Generate cryptographically secure random passwords with specified character sets, patterns, or lengths.
+  bacula-dir - Install bacula from Debian repos.
+  bacula-fd  - Install bacula file director client (only).
+  composer   - Install composer
+  pyrpg      - Generate cryptographically secure random passwords with specified character sets, patterns, or lengths.
+  python3    - Install Python using Debian packages
 
 EOF
+}
+
+first_run_checklist() {
+    echo "Enter the hostname for this computer"
+    read HOSTNAME
+    echo ${HOSTNAME} > /etc/hostname
+    hostname ${HOSTNAME}
+    MAC=$(ip addr | grep ether)
+    echo "Mac address is: ${MAC}. Create the DHCP reservation now, and press enter. Or, type skip to skip this."
+    read CHOICE
+    if [ "${CHOICE}" != 'skip' ]; then
+        dhclient -v
+    fi
+    apt update
+    apt --assume-yes upgrade
+    harden_root_password
 }
 
 INSTALLDIR=$(dirname $(readlink -f /usr/local/bin/reset-permissions))
@@ -158,6 +190,9 @@ case $1 in
         ;;
     'show')
         show_info $2
+        ;;
+    'checklist')
+        first_run_checklist
         ;;
     *)
         usage

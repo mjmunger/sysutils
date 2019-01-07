@@ -587,6 +587,7 @@ add_website() {
 install_python_latest() {
     apt update && apt upgrade -y
     apt install build-essential -y
+    apt build-dep python
     apt install libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev -y
     apt install zlib1g -y
     cd /usr/src/
