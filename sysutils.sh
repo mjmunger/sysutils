@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 source vars.sh
-for f in ${SCRIPTSDIR}; do source $f; done
+for f in ${SCRIPTSDIR}/*; do source $f; done
 
 usage() {
     cat <<EOF
