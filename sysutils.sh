@@ -286,7 +286,7 @@ EOF
 }
 
 run_config() {
-    if [ -z $2 ]; then
+    if [ -z $1 ]; then
         echo "Argument missing."
         show_config_help
         exit 1
