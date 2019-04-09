@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+source vars.sh
+for f in ${SCRIPTSDIR}; do source $f; done
+
 usage() {
     cat <<EOF
 
@@ -13,6 +16,7 @@ Syntax:
 
 Available commands:
 
+    config   Run a configuration script
     install  Install a package. (use list command to see what's available)
     list     List available packages.
     show     Show information about this installation.
@@ -154,6 +158,7 @@ Available packages to install:
   pyrpg      - Generate cryptographically secure random passwords with specified character sets, patterns, or lengths.
   python3    - Install Python using Debian packages
 
+
 EOF
 }
 
@@ -260,10 +265,45 @@ EOF
     echo "You should reboot to ensure this is active and effective."
 }
 
-INSTALLDIR=$(dirname $(readlink -f /usr/local/bin/reset-permissions))
-SCRIPTSDIR=${INSTALLDIR}/scripts
+show_config_help() {
+    cat <<EOF
+
+sysutil configure
+
+    This is a group of server administration scripts that help configure a server.
+
+Syntax:
+
+    sysutils config [command] [arg1, arg2, ...]
+
+Available commands:
+
+    hostname Run a configuration script
+
+Support and issues should be filed on github: https://github.com/mjmunger/sysutils
+
+EOF
+}
+
+run_config() {
+    if [ -z $2 ]; then
+        echo "Argument missing."
+        show_config_help
+        exit 1
+    fi
+
+    case $1 in
+        'hostname')
+            config_hostname $2 $3
+        ;;
+    esac
+}
+
 
 case $1 in
+    'config')
+        run_config $2
+    ;;
     'update')
         check_root
         update_package
