@@ -302,7 +302,7 @@ run_config() {
 
 case $1 in
     'config')
-        run_config $2
+        run_config $2 $3 $4
     ;;
     'update')
         check_root
