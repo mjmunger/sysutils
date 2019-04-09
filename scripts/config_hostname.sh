@@ -29,7 +29,7 @@ config_hostname() {
 
     HOSTNAME=$1
     DOMAIN=$2
-    FQDN=${HOSTNAME}.{$DOMAIN}
+    FQDN=${HOSTNAME}.${DOMAIN}
 
     hostname ${HOSTNAME}
     echo "${HOSTNAME}" > /etc/hostname
