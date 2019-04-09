@@ -21,7 +21,7 @@ EOF
 }
 
 config_hostname() {
-    if [[ -z "$1" ] || [ -z "$2" ]]; then
+    if [ -z "$1" ] || [ -z "$2" ]; then
         show_config_hostname_help
     fi
 
