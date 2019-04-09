@@ -21,8 +21,7 @@ EOF
 }
 
 config_hostname() {
-echo "1: $1"
-echo "2: $2"
+
     if [ -z "$1" ] || [ -z "$2" ]; then
         show_config_hostname_help
         exit 1
