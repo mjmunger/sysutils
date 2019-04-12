@@ -30,5 +30,5 @@ net.ipv6.conf.eth1.disable_ipv6 = 1
 net.ipv6.conf.ppp0.disable_ipv6 = 1
 net.ipv6.conf.tun0.disable_ipv6 = 1
 EOF
-    echo "You should reboot to ensure this is active and effective."
+    echo "You should reboot to ensure ipv6 is disabled."
 }

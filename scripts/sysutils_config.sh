@@ -16,6 +16,7 @@ Available commands:
     checklist     Run the inital setup checklist for a Debian server.
     hostname      Set the hostname for this server
     setup-server  Setup this server using known good recipes.
+    sudo-nopass   Configure sudo to allow members of the sudo group to gain root without a password.
 
 Support and issues should be filed on github: https://github.com/mjmunger/sysutils
 
@@ -38,6 +39,9 @@ sysutils_config() {
         ;;
         'setup-server')
             setup_server $@
+        ;;
+        'sudo-nopass')
+            setup_sudo
         ;;
     *)
         show_sysutils_config_help
