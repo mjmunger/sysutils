@@ -14,6 +14,7 @@ Syntax:
 Available commands:
 
     hostname    Set the hostname for this server
+    setup-server  Setup this server using known good recipes.
 
 Support and issues should be filed on github: https://github.com/mjmunger/sysutils
 
