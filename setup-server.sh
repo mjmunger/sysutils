@@ -25,13 +25,6 @@ check_dependency() {
   fi
 }
 
-error_out() {
-    echo "================================================================================"
-    echo "Error: $1"
-    echo "================================================================================"
-    exit 1
-}
-
 clear_sources() {
     #Kill the original sources
     cat /dev/null > /etc/apt/sources.list    
@@ -153,16 +146,7 @@ install_php7() {
     echo "Done. I emailed you about it."
 }
 
-install_php7_debian_packages() {
-    apt update
-    apt --assume-yes upgrade
-    apt install ca-certificates apt-transport-https
-    wget -q https://packages.sury.org/php/apt.gpg -O- | sudo apt-key add -
-    echo "deb https://packages.sury.org/php/ stretch main" | sudo tee /etc/apt/sources.list.d/php.list
-    apt update
-    apt install --assume-yes php7.2
-    apt install --assume-yes libapache2-mod-php7.2 php7.2 php7.2-cgi php7.2-cli php7.2-common php7.2-curl php7.2-dev php7.2-gd php7.2-imap php7.2-intl php7.2-json php7.2-mbstring php7.2-mysql php7.2-opcache php7.2-pspell php7.2-readline php7.2-recode php7.2-soap php7.2-sqlite3 php7.2-tidy php7.2-xml php7.2-xmlrpc php7.2-xsl php7.2-zip php-libsodium php-mcrypt php7.2-gmp
-}
+
 
 install_lamp_stack() {
         CODENAME=`lsb_release -c | awk '{ print $2 }'`
@@ -286,82 +270,6 @@ setup_sudo() {
     sed -i 's/sudo.*ALL=(ALL:ALL)/\sudo    ALL=NOPASSWD:/g' /etc/sudoers
     chmod -w /etc/sudoers
     echo "[OK]"
-}
-
-download_install_key() {
-    #Get my ssh key, and add to root
-    HOMEDIR=`eval echo ~$1`
-    SSHDIR=$HOMEDIR/.ssh/
-
-    #If the SSH dir does not exist, create it.
-    if [ ! -d $SSHDIR ]; then
-        echo "Creating $SSHDIR!"
-        mkdir -p $SSHDIR
-    fi
-
-    KEYFILE=$SSHDIR/authorized_keys
-
-    echo -n "Getting SSH key..."
-    wget -O /tmp/id_rsa.pub https://www.highpoweredhelp.com/keys/$1/id_rsa.pub  2>&1 >/dev/null
-    if [ -f /tmp/id_rsa.pub ]; then
-      echo "[OK]"
-    else
-      echo "COULD NOT GET NEW KEY!"
-      exit 1;
-    fi
-
-    echo -n "Appending new key to authorized_keys..."
-
-    #Append the new key
-
-    cat /tmp/id_rsa.pub >> $KEYFILE
-    echo "[OK]"
-    echo -n "Setting permissions to 0600..."
-    #double check permissions.
-    chmod 0600 $KEYFILE
-    echo "[OK]"
-
-    echo "Fixing permissions!"
-
-    chown -R $1:$1 $SSHDIR
-    chmod 0700 $SSHDIR
-    chmod 0600 $KEYFILE
-}
-
-setup_user() {
-    echo "Setting up user: $1..."
-    PASS=`pwgen -cns 12 1`
-    #Create the user as specified by the $1 argument.
-    useradd -m $1
-    usermod -s /bin/bash $1
-    #add to the sudo group.
-    usermod -a -G sudo $1
-    echo "Setting password to: $PASS"
-    echo "$1:$PASS" | chpasswd
-
-    echo "Saving information to setup.log"
-    echo $1 : $PASS >> setup.log
-
-    if [ ! -d /home/$1/.ssh ]; then
-        echo "Making directory: /home/$1/.ssh/"
-        mkdir /home/$1/.ssh/
-    fi
-
-    download_install_key $1
-
-    #Make sure .ssh exists.
-    if [ ! -d /home/$1/.ssh/ ]; then
-        mkdir -p /home/$1/.ssh/
-    fi
-
-
-    #Setup .bashrc for color and verbose copies, moves, and dels.
-    sed -i 's/^# export/export/g' /home/$1/.bashrc
-    sed -i 's/^# alias/alias/g' /home/$1/.bashrc
-    sed -i 's/^# eval/eval/g' /home/$1/.bashrc
-    sed -i 's/^-i/-v/g' /home/$1/.bashrc
-
-    chown -R $1:$1 /home/$1
 }
 
 setup_server() {
@@ -637,9 +545,6 @@ check_dependency chpasswd
         ;;
     'php7src' )
         install_php7
-        ;;
-    'php7deb' )
-        install_php7_debian_packages
         ;;
     'bacula' )
         install_bacula

@@ -3,7 +3,7 @@
 show_config_hostname_help() {
 cat <<EOF
 
-sysutil configure hostname
+sysutil config hostname
 
     Sets the hostname for this server.
 

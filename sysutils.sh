@@ -1,7 +1,16 @@
 #!/usr/bin/env bash
 
-source vars.sh
-for f in ${SCRIPTSDIR}/*; do source $f; done
+INSTALLDIR=$(dirname $(readlink -f /usr/local/bin/reset-permissions))
+SCRIPTSDIR=${INSTALLDIR}/scripts
+
+for f in ${SCRIPTSDIR}/*;
+do
+    if [ "$1" == "--debug" ]
+    then
+        echo "Loading $f..."
+    fi
+    source $f
+done
 
 usage() {
     cat <<EOF
@@ -32,13 +41,6 @@ Available commands:
 Support and issues should be filed on github: https://github.com/mjmunger/sysutils
 
 EOF
-}
-
-check_root() {
-    if [[ $EUID -ne 0 ]]; then
-        echo "This command must be run as root."
-        exit 1
-    fi
 }
 
 show_version() {
@@ -265,44 +267,9 @@ EOF
     echo "You should reboot to ensure this is active and effective."
 }
 
-show_config_help() {
-    cat <<EOF
-
-sysutil configure
-
-    This is a group of server administration scripts that help configure a server.
-
-Syntax:
-
-    sysutils config [command] [arg1, arg2, ...]
-
-Available commands:
-
-    hostname Run a configuration script
-
-Support and issues should be filed on github: https://github.com/mjmunger/sysutils
-
-EOF
-}
-
-run_config() {
-    if [ -z $1 ]; then
-        echo "Argument missing."
-        show_config_help
-        exit 1
-    fi
-
-    case $1 in
-        'hostname')
-            config_hostname $2 $3
-        ;;
-    esac
-}
-
-
 case $1 in
     'config')
-        run_config $2 $3 $4
+        sysutils_config $@
     ;;
     'update')
         check_root

@@ -3,7 +3,7 @@ A series of scripts meant to make working with servers easier.
 
 # Installation
 
-To installt these scripts, clone them to some place reasonable (/usr/share?), and then run `install.sh` as root. To uninstall, run `uninstall.sh` as root.
+To install these scripts, clone them to some place reasonable (/usr/share?), and then run `install.sh` as root. To uninstall, run `uninstall.sh` as root.
 
 # Utilities
 
