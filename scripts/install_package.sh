@@ -61,7 +61,7 @@ EOF
 
 install_package() {
 
-    PACKAGEINSTALLDIR=$1
+    #PACKAGEINSTALLDIR=$1
     PACKAGE=$2
     echo "Package=${PACKAGE}"
     echo "Package Install directory: ${PACKAGEINSTALLDIR}"
