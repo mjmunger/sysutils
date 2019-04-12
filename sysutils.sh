@@ -255,7 +255,7 @@ case $1 in
         ;;
     'install')
         check_root
-        install_package ${PACKAGEINSTALLDIR} $2
+        install_package $2
         ;;
     'list' )
         list_installable_packages ${PACKAGEINSTALLDIR}
