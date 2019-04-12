@@ -6,7 +6,7 @@ install_mysql_brtools() {
     cd /usr/src/
     git clone https://git.highpoweredhelp.com:8443/michael/mysql-brtools.git
     cd mysql-brtools
-    ./setup
+    /usr/src/mysql-brtools/setup.sh
 }
 
 run_installer() {
