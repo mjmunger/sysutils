@@ -69,12 +69,12 @@ install_package() {
     INSTALLSCRIPT=${PACKAGEINSTALLDIR}/${PACKAGE}.sh
 
     if [ -z ${PACKAGE} ]; then
-        list_installable_packages ${INSTALLDIR}
+        list_installable_packages ${PACKAGEINSTALLDIR}
         exit 1
     fi
 
     if [ ! -f ${INSTALLSCRIPT} ]; then
-        list_installable_packages ${INSTALLDIR}
+        list_installable_packages ${PACKAGEINSTALLDIR}
         exit 1
     fi
 
