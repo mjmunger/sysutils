@@ -2,7 +2,7 @@
 # composer
 # Installs PHP composer from https://getcomposer.org/installer
 
-install_composer() {
+run_installer() {
     cd /usr/share/php/
     mkdir composer
     cd composer

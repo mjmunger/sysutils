@@ -35,4 +35,5 @@ run_installer() {
 
 When the `sysutils install` command reads these files, it will do two things:
 1. If there is *no* package specified, it will read the `scripts/install` directory and parse lines 2 and 3 to get the command tag and description, respectively.
-1. If a command tag IS specified, the installer will look in `scripts/install` to see if a bash script with that tag exists. If it does, it will load it using `source`, and then execute the `run_installer` function._
+1. If a command tag IS specified, the installer will look in `scripts/install` to see if a bash script with that tag exists. If it does, it will load it using `source`, and then execute the `run_installer` function.
+1. If a command tag IS specified (`foo`), but the corresponding installer script (`scripts/install/foo.sh`) does not exist, the installer will show you the help screen.

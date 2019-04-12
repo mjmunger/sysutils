@@ -5,7 +5,7 @@
 run_installer() {
     apt update
     apt -y upgrade
-    apt install ca-certificates apt-transport-https
+    apt -y install ca-certificates apt-transport-https
     wget -q https://packages.sury.org/php/apt.gpg -O- | sudo apt-key add -
     echo "deb https://packages.sury.org/php/ stretch main" | sudo tee /etc/apt/sources.list.d/php.list
     apt update

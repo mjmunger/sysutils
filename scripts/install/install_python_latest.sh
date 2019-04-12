@@ -2,7 +2,7 @@
 # python_latest
 # Installs the latest version of Python from source.
 
-install_python_latest() {
+run_installer() {
     apt update && apt upgrade -y
     apt install build-essential -y
     apt build-dep python

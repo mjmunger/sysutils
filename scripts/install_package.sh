@@ -17,8 +17,9 @@ EOF
     INSTALLDIR=$1
     APPS=("Package")
     DESCRIPTIONS=("Description")
+    STATES=("Installed?")
 
-    for FILE in ${INSTALLDIR}/*;
+    for FILE in ${INSTALLDIR}/*.sh;
     do
         if [ -d ${FILE} ]; then
             continue
@@ -30,6 +31,11 @@ EOF
         APPS=(${APPS[@]} ${APP})
         DESCRIPTIONS=(${DESCRIPTIONS[@]} "${DESCRIPTION}")
 
+        if [ ! -z $(grep ${APP} ${PACKAGEINSTALLDIR}/history) ]; then
+            STATES=(${STATES[@]} "Installed")
+        else
+            STATES=(${STATES[@]} "-")
+        fi
     done
 
 
@@ -50,7 +56,9 @@ EOF
     for APP in ${APPS[@]}
     do
         DESC=${DESCRIPTIONS[${COUNTER}]}
-        printf "\n%-${COLUMNLEN}s  %-100s" ${APP} ${DESC}
+        STATE=${STATES[${COUNTER}]}
+
+        printf "\n%-15s %-${COLUMNLEN}s  %-100s" ${STATE} ${APP} ${DESC}
         COUNTER=$((${COUNTER} + 1))
     done
 
@@ -76,4 +84,5 @@ install_package() {
 
     source ${INSTALLSCRIPT}
     run_installer
+    printf "\n${PACKAGE} >> ${PACKAGEINSTALLDIR}/history
 }
