@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 list_installable_packages() {
     cat <<EOF
 Syntax:
@@ -84,5 +83,5 @@ install_package() {
 
     source ${INSTALLSCRIPT}
     run_installer
-    printf "\n${PACKAGE} >> ${PACKAGEINSTALLDIR}/history
+    printf "\n${PACKAGE}" >> ${PACKAGEINSTALLDIR}/history
 }
