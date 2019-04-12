@@ -64,6 +64,7 @@ install_package() {
     PACKAGEINSTALLDIR=$1
     PACKAGE=$2
     echo "Package=${PACKAGE}"
+    echo "Package Install directory: ${PACKAGEINSTALLDIR}"
 
     INSTALLSCRIPT=${PACKAGEINSTALLDIR}/${PACKAGE}.sh
 
