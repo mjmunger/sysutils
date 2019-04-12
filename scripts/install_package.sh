@@ -61,7 +61,7 @@ EOF
 
 install_package() {
 
-    PACKAGE=$1
+    PACKAGE=$2
     echo "Package=${PACKAGE}"
 
     INSTALLSCRIPT=${PACKAGEINSTALLDIR}/${PACKAGE}.sh
