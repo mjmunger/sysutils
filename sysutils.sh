@@ -2,12 +2,17 @@
 
 INSTALLDIR=$(dirname $(readlink -f /usr/local/bin/reset-permissions))
 SCRIPTSDIR=${INSTALLDIR}/scripts
+PACKAGEINSTALLDIR=${SCRIPTSDIR}/install
 
 for f in ${SCRIPTSDIR}/*;
 do
     if [ "$1" == "--debug" ]
     then
         echo "Loading $f..."
+    fi
+
+    if [ -d $f ]; then
+        continue
     fi
     source $f
 done
@@ -120,33 +125,6 @@ install_bacula() {
     apt update && apt --assume-yes upgrade
     apt install bacula bacula-common-mysql bacula-console bacula-client
 
-}
-
-install_package() {
-
-    [ -z $1 ] && error_out "You must specify a package to install"
-
-    case $1 in
-        'python3-deb')
-            source ${SCRIPTSDIR}/install-python-36.sh
-            install_python_36
-            ;;
-        'pyrpg')
-            install_rpg
-            ;;
-        'composer')
-            install_composer
-            ;;
-        'bacula-dir')
-            install_bacula
-            ;;
-        'bacula-fd')
-            install_bacula_fd
-            ;;
-        *)
-            error_out "Package $1 is not found."
-            ;;
-    esac
 }
 
 list_packages() {
@@ -280,7 +258,7 @@ case $1 in
         install_package $2
         ;;
     'list' )
-        list_packages
+        list_installable_packages ${PACKAGEINSTALLDIR}
         ;;
     'show')
         show_info $2
