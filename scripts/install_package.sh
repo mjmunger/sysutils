@@ -62,6 +62,7 @@ EOF
 install_package() {
 
     PACKAGE=$1
+    echo ${PACKAGE}
     INSTALLSCRIPT=${PACKAGEINSTALLDIR}/${PACKAGE}.sh
 
     if [ -z ${PACKAGE} ]; then
