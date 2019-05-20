@@ -30,6 +30,10 @@ EOF
         APPS=(${APPS[@]} ${APP})
         DESCRIPTIONS=(${DESCRIPTIONS[@]} "${DESCRIPTION}")
 
+        if [ ! -f ${PACKAGEINSTALLDIR}/history ]; then
+            touch ${PACKAGEINSTALLDIR}/history
+        fi
+
         if [ ! -z $(grep ${APP} ${PACKAGEINSTALLDIR}/history) ]; then
             STATES=(${STATES[@]} "Installed")
         else
