@@ -14,6 +14,7 @@ Syntax:
 Available commands:
 
     checklist     Run the inital setup checklist for a Debian server.
+    enable-watch  Enables watch.hph.io to have root access to run Icinga2 plugins to monitor this box.
     hostname      Set the hostname for this server
     setup-server  Setup this server using known good recipes.
     sudo-nopass   Configure sudo to allow members of the sudo group to gain root without a password.
@@ -43,7 +44,7 @@ sysutils_config() {
         'sudo-nopass')
             setup_sudo
         ;;
-        'enable-checkbyssh')
+        'enable-watch')
             enable_check_by_ssh
         ;;
     *)
