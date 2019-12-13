@@ -43,6 +43,9 @@ sysutils_config() {
         'sudo-nopass')
             setup_sudo
         ;;
+        'enable-checkbyssh')
+            enable_check_by_ssh
+        ;;
     *)
         show_sysutils_config_help
     ;;
