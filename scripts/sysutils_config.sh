@@ -45,7 +45,7 @@ sysutils_config() {
             setup_sudo
         ;;
         'enable-watch')
-            enable_check_by_ssh
+            enable_watch_ssh_access
         ;;
     *)
         show_sysutils_config_help
