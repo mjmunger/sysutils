@@ -582,6 +582,8 @@ add_website() {
     echo "The password for this user has been set to: ${PASSWORD}. Write this down. It is not saved anywhere!"
     [ -d log ] || mkdir log
     [ -d www ] || mkdir www
+    chown $1:$1 log
+    chown $1:$1 www
 }
 
 install_python_latest() {
@@ -663,7 +665,10 @@ check_dependency chpasswd
         install_nodejs8
         ;;
     'addWebsite' )
-        add_website
+        if [ $# != 2 ]; then
+            oops
+        fi
+        add_website $2
         ;;
     'python-latest' )
         install_python_latest
