@@ -27,8 +27,8 @@ config_hostname() {
         exit 1
     fi
 
-    HOSTNAME=$1
-    DOMAIN=$2
+    HOSTNAME=$3
+    DOMAIN=$4
     FQDN=${HOSTNAME}.${DOMAIN}
 
     hostname ${HOSTNAME}
