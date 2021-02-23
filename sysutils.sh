@@ -211,6 +211,22 @@ EOF
 
 }
 
+update_apt_buster() {
+    clear_sources
+
+    cat > /etc/apt/sources.list <<-'EOF'
+deb http://deb.debian.org/debian buster main contrib non-free
+deb-src http://deb.debian.org/debian buster main contrib non-free
+
+deb http://deb.debian.org/debian-security/ buster/updates main contrib non-free
+deb-src http://deb.debian.org/debian-security/ buster/updates main contrib non-free
+
+deb http://deb.debian.org/debian buster-updates main contrib non-free
+deb-src http://deb.debian.org/debian buster-updates main contrib non-free
+EOF
+
+}
+
 update_apt() {
     CODENAME=`lsb_release -c | awk '{ print $2 }'`
 
@@ -221,6 +237,9 @@ update_apt() {
             ;;
         'stretch')
             update_apt_stretch
+            ;;
+        'buster')
+            update_apt_buster
             ;;
         * )
             error_out "$CODENAME not found. Cannot update apt sources."
