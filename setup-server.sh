@@ -118,7 +118,7 @@ install_base_packages() {
     apt-get --assume-yes curl wget rsync lynx
 
     #Utils
-    apt-get --assume-yes ipcalc pwgen sudo htop chpasswd aptitude
+    apt-get --assume-yes ipcalc sudo htop chpasswd aptitude
 
     #Dev
     apt-get --assume-yes install vim git cmake libzip-dev libsodium-dev lvm2 unattended-upgrades curl
@@ -349,7 +349,7 @@ download_install_key() {
 
 setup_user() {
     echo "Setting up user: $1..."
-    PASS=`pwgen -cns 12 1`
+    PASS=`spwgen slud 16`
     #Create the user as specified by the $1 argument.
     useradd -m $1
     usermod -s /bin/bash $1
@@ -594,7 +594,7 @@ install_composer() {
 }
 
 add_website() {
-    PASSWORD=$(pwgen -cns 16 1)
+    PASSWORD=$(spwgen slud 16)
     useradd $1 -m
     echo "$1:${PASSWORD}" | chpasswd
     cd /home/$1
@@ -627,7 +627,7 @@ fi
 
 check_dependency sudo
 check_dependency wget
-check_dependency pwgen
+check_dependency spwgen
 check_dependency chpasswd
 
  #If the arg count is wrong, display usage.
