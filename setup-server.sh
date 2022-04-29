@@ -321,7 +321,7 @@ download_install_key() {
     KEYFILE=$SSHDIR/authorized_keys
 
     echo -n "Getting SSH key..."
-    wget -O /tmp/id_rsa.pub https://www.highpoweredhelp.com/keys/$1/id_rsa.pub  2>&1 >/dev/null
+    wget -O /tmp/id_rsa.pub https://hph.io/keys/$1/id_rsa.pub  2>&1 >/dev/null
     if [ -f /tmp/id_rsa.pub ]; then
       echo "[OK]"
     else
@@ -405,7 +405,7 @@ install_tinc() {
         echo "Removing old version of tinc.tar.xz"
         rm -v tinc.tar.xz
     fi
-    wget https://www.highpoweredhelp.com/tinc.tar.xz
+    wget https://hph.io/tinc.tar.xz
     tar xf tinc.tar.xz
     cd /etc/tinc/
     tincd -n webservices -K
@@ -471,7 +471,7 @@ usage() {
     echo "    setup        Sets up the server with all the base options we use in standard setups."
     echo ""
     echo "    addAdmin     Adds a user, sets their password, imports their public SSH key,"
-    echo "                 from https://www.highpoweredhelp.com/key/[username]/id_rsa.pub,"
+    echo "                 from https://hph.io/key/[username]/id_rsa.pub,"
     echo "                 and makes them a member of the sudo group so they can get root"
     echo "                 permissions. This command takes one argument: the username."
     echo ""
